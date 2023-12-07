@@ -1,0 +1,25 @@
+{
+  "name": "elkov-email-service",
+  "version": "1.0.0",
+  "description": "Elkov microservice for sending emails, with predefined templates and server configuration.",
+  "main": "email-microservice.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rovemonteuxelkov/elkov-email-service.git"
+  },
+  "keywords": [
+    "email",
+    "server",
+    "microservice",
+    "elkov"
+  ],
+  "author": "Rove Monteux",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rovemonteuxelkov/elkov-email-service/issues"
+  },
+  "homepage": "https://github.com/rovemonteuxelkov/elkov-email-service#readme"
+}
