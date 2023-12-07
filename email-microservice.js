@@ -32,3 +32,8 @@ app.post('/', (req, res) => {
   app.listen(port, () => {
     console.log(`ELKOV Email Microservice is running on port ${port}`);
   });
+
+  app.use((req, res, next) => {
+    res.setHeader('X-Powered-By', 'ELKOV');
+    next();
+  });
