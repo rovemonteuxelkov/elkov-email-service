@@ -1,0 +1,9 @@
+[submodule "elkov-messaging-engine"]
+	path = elkov-messaging-engine
+	url = git@github.com:rovemonteuxelkov/elkov-messaging-engine.git
+[submodule "elkov-logging-engine"]
+	path = elkov-logging-engine
+	url = git@github.com:rovemonteuxelkov/elkov-logging-engine.git
+[submodule "elkov-security-engine"]
+	path = elkov-security-engine
+	url = git@github.com:rovemonteuxelkov/elkov-security-engine.git
