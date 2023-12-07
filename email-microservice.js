@@ -29,6 +29,17 @@ app.post('/', (req, res) => {
     callDefaultMap(req, res);
   });
 
+  // GET so Health Check are happy
+app.get('/', (req, res) => {
+	try { 
+		res.json({ status: "healthy" });
+	}
+	catch (error) {
+		res.status(200).json(error);
+	}
+});
+//
+
   app.listen(port, () => {
     console.log(`ELKOV Email Microservice is running on port ${port}`);
   });
