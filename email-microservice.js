@@ -38,6 +38,9 @@ async function callDefaultMap(req, res) {
       else if (Array.isArray(req.body.content)) {
         content = JSON.stringify(req.body.content, null, 2);
       } 
+      else if (typeof myVariable !== 'string') {
+        content = JSON.stringify(req.body.content);
+      }
     //console.log("Received to " + req.body.to + ", subject " + req.body.subject + ", content: "+content);
     emailerModule.emailSendWithoutAttachment(req.body.to, req.body.subject, content);
     res.json({ status: "ok" });
