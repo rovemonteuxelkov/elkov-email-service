@@ -17,8 +17,19 @@ app.use(bodyParser.urlencoded({ limit: process.env.PAYLOAD_SIZE_LIMIT, extended:
 
 async function callDefaultMap(req, res) {
   try {
+    if (!req.body.to || req.body.to.length === 0) {
+      res.status(400).json(" error: { code: 400, message: No recipient provided for the e-mail. }");
+    }
+    else if (!req.body.subject || req.body.subject.length === 0) {
+      res.status(400).json(" error: { code: 400, message: No subject provided for the e-mail. }");
+    }
+    else if (!req.body.content || req.body.content.length === 0) {
+      res.status(400).json(" error: { code: 400, message: No content provided for the e-mail. }");
+    }
+    else {
     emailerModule.emailSendWithoutAttachment(req.body.to, req.body.subject, req.body.content);
     res.json("{ status: ok }");
+    }
   }
   catch (error) {
     res.status(500).json(error);
@@ -26,6 +37,11 @@ async function callDefaultMap(req, res) {
 }
 
 app.post('/', (req, res) => {
+  securityModule.emailKeyAuthorization(req, res);
+  callDefaultMap(req, res);
+});
+
+app.post('/attachment', (req, res) => {
   securityModule.emailKeyAuthorization(req, res);
   callDefaultMap(req, res);
 });
