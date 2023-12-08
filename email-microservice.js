@@ -27,6 +27,7 @@ async function callDefaultMap(req, res) {
       res.status(400).json({ error: { code: 400, message: "No recipient provided for the e-mail." } });
     }
     else {
+    console.log("Received to " + req.body.to + ", subject " + req.body.subject + ", content: "+req.body.content);
     emailerModule.emailSendWithoutAttachment(req.body.to, req.body.subject, req.body.content);
     res.json({ status: "ok" });
     }
