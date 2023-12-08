@@ -15,6 +15,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: process.env.PAYLOAD_SIZE_LIMIT }));
 app.use(bodyParser.urlencoded({ limit: process.env.PAYLOAD_SIZE_LIMIT, extended: true }));
 
+function isJsonObject(obj) {
+  return obj !== null && typeof obj === 'object' && !Array.isArray(obj);
+}
+
 async function callDefaultMap(req, res) {
   try {
     if (!req.body.to || req.body.to.length === 0) {
@@ -27,8 +31,12 @@ async function callDefaultMap(req, res) {
       res.status(400).json({ error: { code: 400, message: "No recipient provided for the e-mail." } });
     }
     else {
-    console.log("Received to " + req.body.to + ", subject " + req.body.subject + ", content: "+req.body.content);
-    emailerModule.emailSendWithoutAttachment(req.body.to, req.body.subject, req.body.content);
+      let content = req.body.content;
+      if (isJsonObject(req.body.content)) {
+        content = JSON.stringify(req.body.content, null, 2);
+      }
+    console.log("Received to " + req.body.to + ", subject " + req.body.subject + ", content: "+content);
+    emailerModule.emailSendWithoutAttachment(req.body.to, req.body.subject, content);
     res.json({ status: "ok" });
     }
   }
