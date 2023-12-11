@@ -15,6 +15,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: process.env.PAYLOAD_SIZE_LIMIT }));
 app.use(bodyParser.urlencoded({ limit: process.env.PAYLOAD_SIZE_LIMIT, extended: true }));
 
+function isValidBase64(str) {
+  if (str === '' || str.trim() === '') return false;
+  try {
+      return Buffer.from(str, 'base64').toString('base64') === str;
+  } catch (e) {
+      return false;
+  }
+}
+
+function decodeBase64Attachments(jsonData) {
+  jsonData.attachments.forEach(attachment => {
+      if (isValidBase64(attachment.content)) {
+          attachment.content = Buffer.from(attachment.content, 'base64');
+      }
+  });
+}
+
+function encodeToBase64Attachments(jsonData) {
+  jsonData.attachments.forEach(attachment => {
+      attachment.content = Buffer.from(attachment.content).toString('base64');
+  });
+}
+
 function isJsonObject(obj) {
   return obj !== null && typeof obj === 'object' && !Array.isArray(obj);
 }
@@ -66,6 +89,7 @@ async function callAttachmentMap(req, res) {
       res.status(400).json({ error: { code: 400, message: "No Base64 attachments provided for the e-mail." } });
     }
     else {
+      decodeBase64Attachments(req.body);
       let content = req.body.content;
       if (isJsonObject(req.body.content)) {
         content = JSON.stringify(req.body.content, null, 2);
@@ -93,7 +117,6 @@ app.post('/', (req, res) => {
 
 app.post('/attachment', (req, res) => {
   securityModule.emailKeyAuthorization(req, res);
-  // stub - TODO: with attachment
   callAttachmentMap(req, res);
 });
 
