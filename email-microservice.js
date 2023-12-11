@@ -51,6 +51,41 @@ async function callDefaultMap(req, res) {
   }
 }
 
+async function callAttachmentMap(req, res) {
+  try {
+    if (!req.body.to || req.body.to.length === 0) {
+      res.status(400).json({ error: { code: 400, message: "No recipient provided for the e-mail." } });
+    }
+    else if (!req.body.subject || req.body.subject.length === 0) {
+      res.status(400).json({ error: { code: 400, message: "No subject provided for the e-mail." } });
+    }
+    else if (!req.body.content || req.body.content.length === 0) {
+      res.status(400).json({ error: { code: 400, message: "No recipient provided for the e-mail." } });
+    }
+    else if (!req.body.attachments || req.body.attachments.length === 0) {
+      res.status(400).json({ error: { code: 400, message: "No Base64 attachments provided for the e-mail." } });
+    }
+    else {
+      let content = req.body.content;
+      if (isJsonObject(req.body.content)) {
+        content = JSON.stringify(req.body.content, null, 2);
+      }
+      else if (Array.isArray(req.body.content)) {
+        content = JSON.stringify(req.body.content, null, 2);
+      } 
+      else if (typeof req.body.content !== 'string') {
+        content = JSON.stringify(req.body.content);
+      }
+    //console.log("Received to " + req.body.to + ", subject " + req.body.subject + ", content: "+content);
+    emailerModule.emailSendWithEncodedAttachments(req.body.to, req.body.subject, content, req.body.attachments);
+    res.json({ status: "ok" });
+    }
+  }
+  catch (error) {
+    res.status(500).json(error);
+  }
+}
+
 app.post('/', (req, res) => {
   securityModule.emailKeyAuthorization(req, res);
   callDefaultMap(req, res);
@@ -58,7 +93,8 @@ app.post('/', (req, res) => {
 
 app.post('/attachment', (req, res) => {
   securityModule.emailKeyAuthorization(req, res);
-  callDefaultMap(req, res);
+  // stub - TODO: with attachment
+  callAttachmentMap(req, res);
 });
 
 // GET so Health Check are happy
