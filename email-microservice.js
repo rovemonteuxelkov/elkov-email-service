@@ -111,7 +111,27 @@ async function callAttachmentMap(req, res) {
 }
 
 async function callAttachmentCollect(req, res) {
-  
+  try {
+    if (!req.body.subject) {
+      res.status(400).json({ error: { code: 400, message: "No subject provided for collecting the e-mail." } });
+    }
+    else if (!req.body.attachment) {
+      res.status(400).json({ error: { code: 400, message: "No attachment subject provided for collecting the e-mail." } });
+    }
+    else if (!req.body.newer) {
+      res.status(400).json({ error: { code: 400, message: "No date range provided for collecting the e-mail, for example 1 hour, 2 hours, 1 day, 2 days, 1 month, 2 months." } });
+    }
+    else if (!req.body.delete || req.body.delete.length === 0) {
+      res.status(400).json({ error: { code: 400, message: "No delete boolean provided for deleting the collected the e-mail." } });
+    }
+    else {
+      let attachment = emailerModule.emailCollect(req.body.subject, req.body.attachment, req.body.newer, eq.body.delete);
+      res.json({ "content": attachment });
+    }
+  }
+  catch (error) {
+    res.status(500).json(error);
+  }
 }
 
 app.post('/collect', (req, res) => {
