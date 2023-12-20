@@ -125,8 +125,14 @@ async function callAttachmentCollect(req, res) {
       res.status(400).json({ error: { code: 400, message: "No delete boolean provided for deleting the collected the e-mail." } });
     }
     else {
+      try {
       let attachment = emailerModule.emailCollect(req.body.subject, req.body.attachment, req.body.newer, eq.body.delete);
       res.json({ "content": attachment });
+      }
+      catch (error) {
+        console.log("Error collecting and processing email attachment: "+JSON.stringify(error));
+        res.status(400).json({ error: { code: 400, message: JSON.stringify(error) } });
+      }
     }
   }
   catch (error) {
