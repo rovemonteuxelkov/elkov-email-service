@@ -130,6 +130,7 @@ async function callAttachmentCollect(req, res) {
         res.status(500).json({ error: { code: 500, message: "Error collecting email: " + errorMessage } });
         console.log('Error:', err);
       } else {
+        console.log("Result: "+result+" or "+JSON.stringify(result));
         res.json({ "content": result || '' }); // Return an empty string if result is null/undefined
       }
     });
