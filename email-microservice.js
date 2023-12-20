@@ -126,8 +126,17 @@ async function callAttachmentCollect(req, res) {
     }
     else {
       try {
-      let attachment = emailerModule.emailCollect(req.body.subject, req.body.attachment, req.body.newer, eq.body.delete);
-      res.json({ "content": attachment });
+      let attachment = "";
+      emailerModule.emailCollect(subject, attachmentSubject, newer, removeEmail, (err, result) => {
+        if (err) {
+          res.status(400).json({ error: { code: 400, message: JSON.stringify(err) } });
+          console.log('Error:', err);
+        } else {
+          //console.log('Result:', result);
+          attachment = result;
+          res.json({ "content": attachment });
+        }
+      });
       }
       catch (error) {
         console.log("Error collecting and processing email attachment: "+JSON.stringify(error));
