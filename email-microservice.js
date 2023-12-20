@@ -112,13 +112,13 @@ async function callAttachmentMap(req, res) {
 
 async function callAttachmentCollect(req, res) {
   try {
-    if (!req.body.subject) {
+    if (req.body.subject === undefined || req.body.subject === null) {
       res.status(400).json({ error: { code: 400, message: "No subject provided for collecting the e-mail." } });
     }
-    else if (!req.body.attachment) {
+    else if (req.body.attachment === undefined || req.body.attachment === null) {
       res.status(400).json({ error: { code: 400, message: "No attachment subject provided for collecting the e-mail." } });
     }
-    else if (!req.body.newer) {
+    else if (req.body.newer === undefined || req.body.newer === null) {
       res.status(400).json({ error: { code: 400, message: "No date range provided for collecting the e-mail, for example 1 hour, 2 hours, 1 day, 2 days, 1 month, 2 months." } });
     }
     else if (!req.body.delete || req.body.delete.length === 0) {
