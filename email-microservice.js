@@ -110,6 +110,15 @@ async function callAttachmentMap(req, res) {
   }
 }
 
+async function callAttachmentCollect(req, res) {
+  
+}
+
+app.post('/collect', (req, res) => {
+  securityModule.emailKeyAuthorization(req, res);
+  callAttachmentCollect(req, res);
+});
+
 app.post('/', (req, res) => {
   securityModule.emailKeyAuthorization(req, res);
   callDefaultMap(req, res);
