@@ -121,7 +121,7 @@ async function callAttachmentCollect(req, res) {
     else if (req.body.newer === undefined || req.body.newer === null) {
       res.status(400).json({ error: { code: 400, message: "No date range provided for collecting the e-mail, for example 1 hour, 2 hours, 1 day, 2 days, 1 month, 2 months." } });
     }
-    else if (!req.body.delete || req.body.delete.length === 0) {
+    else if (req.body.delete === undefined || req.body.delete === null) {
       res.status(400).json({ error: { code: 400, message: "No delete boolean provided for deleting the collected the e-mail." } });
     }
     else {
