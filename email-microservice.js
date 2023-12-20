@@ -126,10 +126,11 @@ async function callAttachmentCollect(req, res) {
   else {
     emailerModule.emailCollect(req.body.subject, req.body.attachment, req.body.newer, req.body.delete, (err, result) => {
       if (err) {
-        res.status(500).json({ error: { code: 500, message: "Error collecting email: " + JSON.stringify(err) } });
+        const errorMessage = err.message || 'Unknown error'; // Fallback in case there's no message
+        res.status(500).json({ error: { code: 500, message: "Error collecting email: " + errorMessage } });
         console.log('Error:', err);
       } else {
-        res.json({ "content": result });
+        res.json({ "content": result || '' }); // Return an empty string if result is null/undefined
       }
     });
   }
