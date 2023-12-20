@@ -111,31 +111,28 @@ async function callAttachmentMap(req, res) {
 }
 
 async function callAttachmentCollect(req, res) {
-    if (req.body.subject === undefined || req.body.subject === null) {
-      res.status(400).json({ error: { code: 400, message: "No subject provided for collecting the e-mail." } });
-    }
-    else if (req.body.attachment === undefined || req.body.attachment === null) {
-      res.status(400).json({ error: { code: 400, message: "No attachment subject provided for collecting the e-mail." } });
-    }
-    else if (req.body.newer === undefined || req.body.newer === null) {
-      res.status(400).json({ error: { code: 400, message: "No date range provided for collecting the e-mail, for example 1 hour, 2 hours, 1 day, 2 days, 1 month, 2 months." } });
-    }
-    else if (req.body.delete === undefined || req.body.delete === null) {
-      res.status(400).json({ error: { code: 400, message: "No delete boolean provided for deleting the collected the e-mail." } });
-    }
-    else {
-      let attachment = "";
-      emailerModule.emailCollect(subject, attachmentSubject, newer, removeEmail, (err, result) => {
-        if (err) {
-          res.status(400).json({ error: { code: 400, message: JSON.stringify(err) } });
-          console.log('Error:', err);
-        } else {
-          //console.log('Result:', result);
-          attachment = result;
-          res.json({ "content": attachment });
-        }
-      });
-    }
+  if (req.body.subject === undefined || req.body.subject === null) {
+    res.status(400).json({ error: { code: 400, message: "No subject provided for collecting the e-mail." } });
+  }
+  else if (req.body.attachment === undefined || req.body.attachment === null) {
+    res.status(400).json({ error: { code: 400, message: "No attachment subject provided for collecting the e-mail." } });
+  }
+  else if (req.body.newer === undefined || req.body.newer === null) {
+    res.status(400).json({ error: { code: 400, message: "No date range provided for collecting the e-mail, for example 1 hour, 2 hours, 1 day, 2 days, 1 month, 2 months." } });
+  }
+  else if (req.body.delete === undefined || req.body.delete === null) {
+    res.status(400).json({ error: { code: 400, message: "No delete boolean provided for deleting the collected the e-mail." } });
+  }
+  else {
+    emailerModule.emailCollect(req.body.subject, req.body.attachment, req.body.newer, req.body.delete, (err, result) => {
+      if (err) {
+        res.status(500).json({ error: { code: 500, message: "Error collecting email: " + JSON.stringify(err) } });
+        console.log('Error:', err);
+      } else {
+        res.json({ "content": result });
+      }
+    });
+  }
 }
 
 app.post('/collect', (req, res) => {
