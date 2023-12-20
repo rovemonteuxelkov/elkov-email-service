@@ -111,7 +111,6 @@ async function callAttachmentMap(req, res) {
 }
 
 async function callAttachmentCollect(req, res) {
-  try {
     if (req.body.subject === undefined || req.body.subject === null) {
       res.status(400).json({ error: { code: 400, message: "No subject provided for collecting the e-mail." } });
     }
@@ -137,10 +136,6 @@ async function callAttachmentCollect(req, res) {
         }
       });
     }
-  }
-  catch (error) {
-    res.status(500).json(error);
-  }
 }
 
 app.post('/collect', (req, res) => {
