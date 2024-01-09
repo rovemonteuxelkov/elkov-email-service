@@ -125,29 +125,18 @@ async function callAttachmentCollect(req, res) {
   }
   else {
     const attachmentValidation = req.body.attachment_validation.trim().toLowerCase();
-    let continueLooping = true;
-    // TODO: loop this to next email if loop is still true, otherwise break out of the loop
-    while (continueLooping) {
-      emailerModule.emailCollect(req.body.subject, req.body.attachment, req.body.newer, req.body.delete, (err, result) => {
+      emailerModule.emailCollect(req.body.subject, req.body.attachment, attachmentValidation, req.body.newer, req.body.delete, (err, result) => {
         if (err) {
           const errorMessage = err.message || 'Unknown error'; // Fallback in case there's no message
           res.status(500).json({error: {code: 500, message: "Error collecting email: " + errorMessage}});
           console.log('Error:', err);
           continueLooping = false;
         } else {
-          if (attachmentValidation === 'xml') {
-
-          }
           console.log("Result: " + result + " or " + JSON.stringify(result));
-          // TODO: check if there is a defined attachment type
-          // TODO: If there is none, continue, otherwise check if the attachment we have is really of the attachment type
-          // TODO: If it is not, collect the next email, until we have one attachment of the type or name, or return
-          // TODO: an error if no email or attachment is available
           res.json({"content": result || ''}); // Return an empty string if result is null/undefined
           continueLooping = false;
         }
       });
-    }
   }
 }
 
