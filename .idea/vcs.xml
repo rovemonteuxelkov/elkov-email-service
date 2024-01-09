@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/elkov-logging-engine" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/elkov-messaging-engine" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/elkov-security-engine" vcs="Git" />
+  </component>
+</project>
